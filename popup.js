@@ -42,3 +42,9 @@ document.getElementById('copy-button').addEventListener('click', function() {
     console.error('Could not copy text: ', err);
   });
 });
+
+document.getElementById('settings-button').addEventListener('click', function() {
+  chrome.tabs.create({
+    url: chrome.runtime.getURL('settings.html')
+  });
+});

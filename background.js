@@ -14,6 +14,10 @@ chrome.runtime.onInstalled.addListener(() => {
     });
 });
 
+function cuttafterfirstdecimal(number) {
+    return Math.floor(number * 10) / 10;
+}
+
 //first run
 fetch('https://coinmarketcap.com/currencies/ethereum/', {
     method: 'GET',
@@ -31,7 +35,8 @@ fetch('https://coinmarketcap.com/currencies/ethereum/', {
         console.log(`The price is: $${match[1]}`);
         console.log(price);
         price = price.replace(/,/g, ''); // remove commas
-        kprice = (parseFloat(price) / 1000).toFixed(1)
+        //kprice = (parseFloat(price) / 1000).toFixed(1)
+        kprice = cuttafterfirstdecimal(parseFloat(price) / 1000);
 
         chrome.storage.local.get("lastprice", (result) => {
             let lastprice = result.lastprice;
@@ -42,6 +47,13 @@ fetch('https://coinmarketcap.com/currencies/ethereum/', {
               console.log("Last price updated in storage");
             });
           });
+        chrome.action.setBadgeBackgroundColor({ color: '#000000' }, () => {
+            if (chrome.browserAction.lastError) {
+                console.error('Failed to set badge color:', chrome.runtime.lastError);
+            } else {
+                console.log('Badge color set to green');
+            }
+        });
       } else {
         console.log("Price not found after the phrase.");
       }
@@ -65,22 +77,6 @@ function updateBadge(newnum) {
 }
 
 setInterval(() => {
-    //unfinshed code
-    chrome.action.setBadgeBackgroundColor({ color: '#800000' }, () => {
-        if (chrome.browserAction.lastError) {
-            console.error('Failed to set badge color:', chrome.runtime.lastError);
-        } else {
-            console.log('Badge color set to red');
-        }
-    });
-    chrome.action.setBadgeBackgroundColor({ color: '#009933' }, () => {
-        if (chrome.browserAction.lastError) {
-            console.error('Failed to set badge color:', chrome.runtime.lastError);
-        } else {
-            console.log('Badge color set to green');
-        }
-    });
-    //end unfinished code   
 
     let price;
 
@@ -100,11 +96,20 @@ setInterval(() => {
           console.log(`The price is: $${match[1]}`);
           console.log(price);
           price = price.replace(/,/g, '');
-          kprice = (parseFloat(price) / 1000).toFixed(1)
+          //kprice = (parseFloat(price) / 1000).toFixed(1)
+          kprice = cuttafterfirstdecimal(parseFloat(price) / 1000);
           chrome.storage.local.get("lastprice", (result) => {
             let lastprice = result.lastprice;
             updateBadge(kprice.toString() + "k");
             console.log("should be updating badge");
+
+            chrome.action.setBadgeTextColor({ color: '#ffffff' }, () => {
+                if (chrome.browserAction.lastError) {
+                    console.error('Failed to set test color:', chrome.runtime.lastError);
+                } else {
+                    console.log('Badge color set to white');
+                }
+            });
 
             if ( kprice > lastprice ) {
                 chrome.action.setBadgeBackgroundColor({ color: '#009933' }, () => {
@@ -139,5 +144,5 @@ setInterval(() => {
       console.error('Error fetching data:', error);
     });
 
-  }, 1000); // 1000 = sec, default 60000 = 1 min
+  }, 60000); // 1000 = sec, default 60000 = 1 min
 

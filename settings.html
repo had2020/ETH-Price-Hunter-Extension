@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+</head>
+<body class="settings_gastracker_backgroundofbody">
+    <link rel="stylesheet" href="settings.css">
+    <h1 class="gear_emoji">⚙️</h1>
+
+    <p id="setting_title_gastracker">Settings</p>
+    
+    <button class="gastracker_fancybutton" id="reset_gastracker">Reset</button>
+    <button class="gastracker_fancybutton" id="black_only_gastracker">Black only badge</button>
+
+    <div>
+        <hr style="border-top: 1px solid #000;">
+        <input type="range" id="badge_reload_time" name="badge_reload_time" min="1" max="5" value="3" list="tickmarks">
+        <datalist id="tickmarks">
+    
+            <option value="1" label="1min"></option>
+            <option value="2" label="2min"></option>
+            <option value="3" label="5min"></option>
+            <option value="4" label="10min"></option>
+            <option value="5" label="15min"></option>
+        </datalist>
+        <hr style="border-top: 1px solid #000;">
+        <label> Badge Reload Time ☝️</label>
+        <hr style="border-top: 1px solid #000;">
+    </div>
+
+
+    <p>Github: <a href="https://github.com/had2020/gas-tracker-extension-" class="fancy-link">https://github.com/had2020/gas-tracker-extension-</a></p>
+
+    <p class="gastracker_fancy_text" id="change-text"> Nothing to save... </p>
+
+    <script src="settings.js"></script>
+</body>
+</html>

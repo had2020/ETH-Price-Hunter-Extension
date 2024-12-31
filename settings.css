@@ -1,0 +1,93 @@
+body.settings_gastracker_backgroundofbody {
+    background-color: #121212;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+#setting_title_gastracker {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.gastracker_fancybutton {
+    background-color: #1f1f1f;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    padding: 15px 30px;
+    font-size: 1.5em;
+    margin: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.gastracker_fancybutton:hover {
+    background-color: #ffffff;
+    color: #1f1f1f;
+}
+
+#change-text {
+    font-size: 1.5em;
+    margin-top: 20px;
+}
+
+.gear_emoji {
+    font-size: 10em;
+    padding: 0px;
+    margin: 0px;
+}
+
+.fancy-link {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.fancy-link:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+label {
+    font-size: 1.5em;
+    text-align: center;
+}
+
+input[type="range"] {
+    width: 300px;
+    margin: 20px 0;
+}
+
+datalist {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.fancy-link {
+    color: #1e90ff;
+    text-decoration: none;
+    font-size: 1.5em;
+}
+
+.fancy-link:hover {
+    text-decoration: underline;
+}
+
+#change-text {
+    font-size: 1.5em;
+    margin-top: 20px;
+}
+
+.gastracker_fancy_text {
+    border: #ffffff 2px solid;
+    border-radius: 3px;
+    font-size: 1.5em;
+    margin-top: 20px;
+}
