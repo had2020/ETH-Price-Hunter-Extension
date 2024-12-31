@@ -32,9 +32,16 @@ fetch('https://coinmarketcap.com/currencies/ethereum/', {
         console.log(price);
         price = price.replace(/,/g, ''); // remove commas
         kprice = (parseFloat(price) / 1000).toFixed(1)
-        let lastprice = localStorage.getItem("lastprice");
-        updateBadge(kprice.toString() + "k");
-        console.log("should be updating badge");
+
+        chrome.storage.local.get("lastprice", (result) => {
+            let lastprice = result.lastprice;
+            updateBadge(kprice.toString() + "k");
+            console.log("should be updating badge");
+            
+            chrome.storage.local.set({ "lastprice": kprice }, () => {
+              console.log("Last price updated in storage");
+            });
+          });
       } else {
         console.log("Price not found after the phrase.");
       }
@@ -70,7 +77,7 @@ setInterval(() => {
         if (chrome.browserAction.lastError) {
             console.error('Failed to set badge color:', chrome.runtime.lastError);
         } else {
-            console.log('Badge color set to red');
+            console.log('Badge color set to green');
         }
     });
     //end unfinished code   
@@ -94,7 +101,33 @@ setInterval(() => {
           console.log(price);
           price = price.replace(/,/g, '');
           kprice = (parseFloat(price) / 1000).toFixed(1)
-          updateBadge(kprice.toString() + "k");
+          chrome.storage.local.get("lastprice", (result) => {
+            let lastprice = result.lastprice;
+            updateBadge(kprice.toString() + "k");
+            console.log("should be updating badge");
+
+            if ( kprice > lastprice ) {
+                chrome.action.setBadgeBackgroundColor({ color: '#009933' }, () => {
+                    if (chrome.browserAction.lastError) {
+                        console.error('Failed to set badge color:', chrome.runtime.lastError);
+                    } else {
+                        console.log('Badge color set to green');
+                    }
+                });
+            } else if ( kprice < lastprice ) {
+                chrome.action.setBadgeBackgroundColor({ color: '#800000' }, () => {
+                    if (chrome.browserAction.lastError) {
+                        console.error('Failed to set badge color:', chrome.runtime.lastError);
+                    } else {
+                        console.log('Badge color set to red');
+                    }
+                });
+            }
+            
+            chrome.storage.local.set({ "lastprice": kprice }, () => {
+              console.log("Last price updated in storage");
+            });
+          });
         } else {
           console.log("Price not found after the phrase.");
         }
@@ -106,5 +139,5 @@ setInterval(() => {
       console.error('Error fetching data:', error);
     });
 
-  }, 60000); //TODO change to 5 minutes, 1000 = sec
+  }, 1000); // 1000 = sec, default 60000 = 1 min
 
