@@ -76,6 +76,41 @@ function updateBadge(newnum) {
     });
 }
 
+function gettime(callback) {
+  chrome.storage.local.get("tracker_speed", (result) => {
+    if (chrome.runtime.lastError) {
+      console.error('Error retrieving tracker_speed:', chrome.runtime.lastError);
+      callback(undefined);
+    } else {
+      const trackerSpeed = result.tracker_speed;
+      console.log('Tracker speed:', trackerSpeed);
+      if (trackerSpeed === undefined) {
+        console.error('tracker_speed is not set in chrome.storage.local');
+        callback(undefined);
+        return;
+      }
+      const minute = 60000;
+      let newtime;
+      if (trackerSpeed == "1") {
+        newtime = minute;
+      } else if (trackerSpeed == "2") {
+        newtime = minute * 2;
+      } else if (trackerSpeed == "3") {
+        newtime = minute * 5;
+      } else if (trackerSpeed == "4") {
+        newtime = minute * 10;
+      } else if (trackerSpeed == "5") {
+        newtime = minute * 15;
+      }
+      callback(newtime);
+    }
+  });
+}
+
+
+let interval_time = gettime((newtime) => {});
+console.log("interval time: " + interval_time);
+
 setInterval(() => {
 
     let price;
@@ -145,4 +180,3 @@ setInterval(() => {
     });
 
   }, 60000); // 1000 = sec, default 60000 = 1 min
-
