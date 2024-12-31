@@ -1,6 +1,6 @@
 {
-    "name": "Gas Tracker",
-    "description": "Crypto gas tracker",
+    "name": "ETH Price Hunter",
+    "description": "ETH Price Tracker",
     "version": "1.0",
     "manifest_version": 3,
     "background": {
