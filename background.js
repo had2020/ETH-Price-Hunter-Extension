@@ -108,9 +108,6 @@ function gettime(callback) {
 }
 
 
-let interval_time = gettime((newtime) => {});
-console.log("interval time: " + interval_time);
-
 setInterval(() => {
 
     let price;
