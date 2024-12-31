@@ -1,0 +1,30 @@
+.gastracker_backgroundofbody {
+    background-color: #2a2a2a;
+}
+
+.gastracker_fancyfooter {
+    display: flex; 
+    align-items: center; 
+    gap: 10px;        
+    justify-content: center; 
+    text-align: center;
+    padding: 0.3rem;
+    background-color: rgba(34, 34, 34, 0.8);
+    border-top: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+    color: #fff;
+  }
+
+.gastracker_fancybutton {
+    padding: 10px;
+    font-size: 0.6rem;
+    padding: 0.5rem 1rem;
+    margin: 0.1rem;
+    background: #ffffff;
+    border: none;
+    border-radius: 30px;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s;
+}

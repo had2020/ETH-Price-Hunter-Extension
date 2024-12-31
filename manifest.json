@@ -3,14 +3,24 @@
     "description": "Crypto gas tracker",
     "version": "1.0",
     "manifest_version": 3,
+    "background": {
+        "service_worker": "background.js"
+    },
     "action": {
         "default_popup": "popup.html",
         "default_icon": "coinlogo.png"
     },
     "permissions": [
         "https://coinmarketcap.com/*",
+        "action",
         "storage",
         "activeTab",
         "scripting"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "css": ["styles.css"]
+        }
     ]
 }
