@@ -11,7 +11,6 @@
         "default_icon": "coinlogo.png"
     },
     "permissions": [
-        "https://coinmarketcap.com/*",
         "action",
         "storage",
         "activeTab",

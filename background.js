@@ -62,6 +62,11 @@ function cuttafterfirstdecimal(number) {
     return Math.floor(number * 10) / 10;
 }
 
+function cuttafterthirddecimal(number) {
+  return Math.floor(number * 1000) / 1000;
+}
+
+
 //first prerun
 tracker_show_badge((value) => {
   console.log("tracker_show_badge 2: " + value);
@@ -84,14 +89,17 @@ tracker_show_badge((value) => {
         if (match && match[1]) {
           price = match[1].toString();
           console.log(`The price is: $${match[1]}`);
-          console.log(price);
+          //console.log(price);
           price = price.replace(/,/g, ''); // remove commas
           //kprice = (parseFloat(price) / 1000).toFixed(1)
-          kprice = cuttafterfirstdecimal(parseFloat(price) / 1000);
+          //kprice = cuttafterfirstdecimal(parseFloat(price) / 1000);
+          kprice = price
+          console.log("kprice: " + kprice);
 
           chrome.storage.local.get("lastprice", (result) => {
               let lastprice = result.lastprice;
-              updateBadge(kprice.toString() + "k");
+              //updateBadge(kprice.toString() + "k");
+              updateBadge(kprice);
               console.log("should be updating badge");
               
               chrome.storage.local.set({ "lastprice": kprice }, () => {
@@ -185,11 +193,14 @@ setInterval(() => {
           console.log(`The price is: $${match[1]}`);
           console.log(price);
           price = price.replace(/,/g, '');
-          //kprice = (parseFloat(price) / 1000).toFixed(1)
-          kprice = cuttafterfirstdecimal(parseFloat(price) / 1000);
+          //kprice = (parseFloat(price) / 1000).toFixed(1) // it rounds to 1 decimal
+          //kprice = cuttafterfirstdecimal(parseFloat(price) / 1000); // it cuts after first decimal
+          kprice = price
+
           chrome.storage.local.get("lastprice", (result) => {
             let lastprice = result.lastprice;
-            updateBadge(kprice.toString() + "k");
+            //updateBadge(kprice.toString() + "k");
+            updateBadge(kprice);
             console.log("should be updating badge");
 
             chrome.action.setBadgeTextColor({ color: '#ffffff' }, () => {

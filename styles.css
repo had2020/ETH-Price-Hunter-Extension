@@ -4,29 +4,21 @@
 
 .gastracker_fancyfooter {
     display: flex; 
-    align-items: center; 
-    gap: 10px;        
-    justify-content: center; 
-    text-align: center;
-    padding: 0.3rem;
-    background-color: rgba(34, 34, 34, 0.8);
-    border-top: 2px solid #ffffff;
-    border-bottom: 2px solid #ffffff;
+    align-items: left;     
+    justify-content: left; 
+    text-align: left;
+    flex-wrap: wrap;
     color: #fff;
   }
 
 .gastracker_fancybutton {
-    padding: 5px;
-    font-size: 0.6rem;
-    padding: 0.5rem 0.8rem;
-    margin: 0.1rem;
+    align-self: left;
+    font-size: 0.8rem;
     background-color: #1f1f1f;
-    color: #ffffff;
-    border: 2px solid #ffffff;
-    padding: 15px 30px;
-    font-size: 1em;
-    margin: 10px;
+    color: #0059ff;
+    border: 0.5px solid #0059ff;
     cursor: pointer;
+    margin-left: 10px;
     transition: transform 0.3s, background-color 0.3s;
 }
 
@@ -37,17 +29,13 @@
 
 .gastracker_fancybutton_settings {
     align-self: right;
-    padding: 5px;
-    font-size: 0.6rem;
-    padding: 0.5rem 0.8rem;
-    margin: 0.1rem;
+    font-size: 0.8rem;
     background-color: #1f1f1f;
     color: #ffffff;
-    border: 2px solid #ffffff;
-    padding: 15px 30px;
-    font-size: 1em;
-    margin: 10px;
+    border: 0.5px solid #ffffff;
     cursor: pointer;
+    border-radius: round 5px;
+    margin-left: 230px;
     transition: transform 0.3s, background-color 0.3s;
 }
 
