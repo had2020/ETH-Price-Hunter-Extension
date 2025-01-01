@@ -14,82 +14,114 @@ chrome.runtime.onInstalled.addListener(() => {
     });
 });
 
-function should_color(callback) {
+function not_should_color(callback) {
   chrome.storage.local.get("tracker_black_badge", (result) => {
     if (chrome.runtime.lastError) {
-      console.error('Error retrieving tracker_speed:', chrome.runtime.lastError);
-      callback(false);
+      console.error('Error retrieving value:', chrome.runtime.lastError);
+      callback(undefined);
     } else {
-      const tracker_black_badge = result.tracker_black_badge1;
-      console.log('chroma should color:', tracker_black_badge);
-      if (tracker_black_badge === undefined) {
-        console.error('tracker_speed is not set in chrome.storage.local');
-        callback(false);
       } else {
-        callback(true);
+      const Value = result.tracker_black_badge ? result.tracker_black_badge[0] : undefined;
+      console.log('Value:', Value);
+      if (Value === undefined) {
+        console.error('Value is not set in chrome.storage.local');
+        callback(undefined);
+        return;
       }
+      if (Value == "1") {
+        console.log("should_color: " + Value);
+      }
+      callback(Value);
     }
   });
 }
 
+function tracker_show_badge(callback) {
+  chrome.storage.local.get("tracker_show_badge", (result) => {
+    if (chrome.runtime.lastError) {
+      console.error('Error retrieving value:', chrome.runtime.lastError);
+      callback(undefined);
+    } else {
+      const Value = result.tracker_show_badge ? result.tracker_show_badge[0] : undefined;
+      console.log('Value:', Value);
+      if (Value === undefined) {
+        console.error('Value is not set in chrome.storage.local');
+        callback(undefined);
+        return;
+      }
+
+      if (Value == "true") {
+        callback(true);
+      }
+
+      callback(false);
+    }
+  });
+}
 
 function cuttafterfirstdecimal(number) {
     return Math.floor(number * 10) / 10;
 }
 
+//first prerun
+tracker_show_badge((value) => {
+  console.log("tracker_show_badge 2: " + value);
+  let show_badge = value;
+  console.log("show_badge: " + show_badge);
 
+  if (show_badge == true) {
+    //first run
+    fetch('https://coinmarketcap.com/currencies/ethereum/', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.text())
+    .then(data => {
+      const phrase = "price today is";
+      if (data.includes(phrase)) {
+        console.log("The phrase 'price today is' was found in the text.");
+        const regex = new RegExp(`${phrase}\\s+\\$([\\d,]+)`);
+        const match = data.match(regex);
+        if (match && match[1]) {
+          price = match[1].toString();
+          console.log(`The price is: $${match[1]}`);
+          console.log(price);
+          price = price.replace(/,/g, ''); // remove commas
+          //kprice = (parseFloat(price) / 1000).toFixed(1)
+          kprice = cuttafterfirstdecimal(parseFloat(price) / 1000);
 
-should_color((should_color1) => {
-  console.log("should_color: " + should_color1);
-});
-
-//first run
-fetch('https://coinmarketcap.com/currencies/ethereum/', {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  })
-  .then(response => response.text())
-  .then(data => {
-    const phrase = "price today is";
-    if (data.includes(phrase)) {
-      console.log("The phrase 'price today is' was found in the text.");
-      const regex = new RegExp(`${phrase}\\s+\\$([\\d,]+)`);
-      const match = data.match(regex);
-      if (match && match[1]) {
-        price = match[1].toString();
-        console.log(`The price is: $${match[1]}`);
-        console.log(price);
-        price = price.replace(/,/g, ''); // remove commas
-        //kprice = (parseFloat(price) / 1000).toFixed(1)
-        kprice = cuttafterfirstdecimal(parseFloat(price) / 1000);
-
-        chrome.storage.local.get("lastprice", (result) => {
-            let lastprice = result.lastprice;
-            updateBadge(kprice.toString() + "k");
-            console.log("should be updating badge");
-            
-            chrome.storage.local.set({ "lastprice": kprice }, () => {
-              console.log("Last price updated in storage");
+          chrome.storage.local.get("lastprice", (result) => {
+              let lastprice = result.lastprice;
+              updateBadge(kprice.toString() + "k");
+              console.log("should be updating badge");
+              
+              chrome.storage.local.set({ "lastprice": kprice }, () => {
+                console.log("Last price updated in storage");
+              });
             });
+          chrome.action.setBadgeBackgroundColor({ color: '#000000' }, () => {
+              if (chrome.browserAction.lastError) {
+                  console.error('Failed to set badge color:', chrome.runtime.lastError);
+              } else {
+                  console.log('Badge color set to green');
+              }
           });
-        chrome.action.setBadgeBackgroundColor({ color: '#000000' }, () => {
-            if (chrome.browserAction.lastError) {
-                console.error('Failed to set badge color:', chrome.runtime.lastError);
-            } else {
-                console.log('Badge color set to green');
-            }
-        });
+        } else {
+          console.log("Price not found after the phrase.");
+        }
       } else {
-        console.log("Price not found after the phrase.");
+        console.log("The phrase 'price today is' was not found in the text.");
       }
-    } else {
-      console.log("The phrase 'price today is' was not found in the text.");
-    }
-  })
-  .catch(error => {
-    console.error('Error fetching data:', error);
-  });
-
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+  } else if (show_badge == false) {
+    updateBadge("");
+  } else {
+    console.log("show_badge is not set issue");
+  }
+});
 
 function updateBadge(newnum) {
     chrome.action.setBadgeText({ text: newnum }, () => {
@@ -169,22 +201,37 @@ setInterval(() => {
                 }
             });
 
+            let not_should_color2 
+            not_should_color((should_color1) => {
+              console.log("should_color: " + should_color1);
+              if (should_color1 == "true") {
+                not_should_color2 = true;
+              } else {
+                not_should_color2 = false;
+              }
+            });
+
+            if (!not_should_color2) {
+            
             if ( kprice > lastprice ) {
-                chrome.action.setBadgeBackgroundColor({ color: '#009933' }, () => {
-                    if (chrome.browserAction.lastError) {
-                        console.error('Failed to set badge color:', chrome.runtime.lastError);
-                    } else {
-                        console.log('Badge color set to green');
-                    }
-                });
-            } else if ( kprice < lastprice ) {
-                chrome.action.setBadgeBackgroundColor({ color: '#800000' }, () => {
-                    if (chrome.browserAction.lastError) {
-                        console.error('Failed to set badge color:', chrome.runtime.lastError);
-                    } else {
-                        console.log('Badge color set to red');
-                    }
-                });
+                  chrome.action.setBadgeBackgroundColor({ color: '#009933' }, () => {
+                      if (chrome.browserAction.lastError) {
+                          console.error('Failed to set badge color:', chrome.runtime.lastError);
+                      } else {
+                          console.log('Badge color set to green');
+                      }
+                  });
+
+              } else if ( kprice < lastprice ) {
+                  chrome.action.setBadgeBackgroundColor({ color: '#800000' }, () => {
+                      if (chrome.browserAction.lastError) {
+                          console.error('Failed to set badge color:', chrome.runtime.lastError);
+                      } else {
+                          console.log('Badge color set to red');
+                      }
+                  });
+              }
+
             }
             
             chrome.storage.local.set({ "lastprice": kprice }, () => {

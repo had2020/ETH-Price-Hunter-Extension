@@ -1,6 +1,7 @@
 console.log("settings.js loaded");
 
 function chroma_saving() {
+    console.log("chroma_saving");
     current_black_color = localStorage.getItem("tracker_black_badge");
     current_show_badge = localStorage.getItem("tracker_show_badge");
     current_speed = localStorage.getItem("tracker_speed");
@@ -56,10 +57,10 @@ slider.value = current_speed;
 
 function changed() {
     document.getElementById("change-text").innerHTML = "Saved Changes 👍";
+    chroma_saving();
     setTimeout(() => {
         document.getElementById("change-text").innerHTML = "Nothing else to save...";
     }, 3000);
-    chroma_saving();
 }
 
 //Reset 
@@ -130,3 +131,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
     slider.addEventListener('input', handleSliderInput);
 });
 // end of speed slider
+
+// Reload Extension
+document.getElementById('reload_extension').addEventListener('click', function() {
+    chrome.runtime.reload();
+});
