@@ -14,9 +14,34 @@ chrome.runtime.onInstalled.addListener(() => {
     });
 });
 
+function should_color(callback) {
+  chrome.storage.local.get("tracker_black_badge", (result) => {
+    if (chrome.runtime.lastError) {
+      console.error('Error retrieving tracker_speed:', chrome.runtime.lastError);
+      callback(false);
+    } else {
+      const tracker_black_badge = result.tracker_black_badge1;
+      console.log('chroma should color:', tracker_black_badge);
+      if (tracker_black_badge === undefined) {
+        console.error('tracker_speed is not set in chrome.storage.local');
+        callback(false);
+      } else {
+        callback(true);
+      }
+    }
+  });
+}
+
+
 function cuttafterfirstdecimal(number) {
     return Math.floor(number * 10) / 10;
 }
+
+
+
+should_color((should_color1) => {
+  console.log("should_color: " + should_color1);
+});
 
 //first run
 fetch('https://coinmarketcap.com/currencies/ethereum/', {
@@ -107,10 +132,11 @@ function gettime(callback) {
   });
 }
 
-
 setInterval(() => {
 
     let price;
+
+    let should_color = should_color();
 
     fetch('https://coinmarketcap.com/currencies/ethereum/', {
       method: 'GET',
