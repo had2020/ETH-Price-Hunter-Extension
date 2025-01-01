@@ -20,7 +20,6 @@ function not_should_color(callback) {
       console.error('Error retrieving value:', chrome.runtime.lastError);
       callback(undefined);
     } else {
-      } else {
       const Value = result.tracker_black_badge ? result.tracker_black_badge[0] : undefined;
       console.log('Value:', Value);
       if (Value === undefined) {
