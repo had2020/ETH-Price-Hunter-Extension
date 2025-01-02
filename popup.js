@@ -30,6 +30,10 @@ fetch('https://coinmarketcap.com/currencies/ethereum/', {
 */
 // /\ fetching code
 
+localStorage.setItem("tracker_black_badge", "false")
+localStorage.setItem("tracker_show_badge", "true")
+localStorage.setItem("tracker_speed", "3")
+
 document.getElementById('copy-button').addEventListener('click', function() {
   const address = '0x6F4C57911E2867caf57a1316b53A05a71a9F5818';
   navigator.clipboard.writeText(address).then(function() {
