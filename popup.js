@@ -1,6 +1,6 @@
-
 if (localStorage.getItem("firstgo") != "false") {
   localStorage.setItem("firstgo", "false")
+  alert("Please reset settings to default by clicking on the settings button")
   chrome.tabs.create({
     url: chrome.runtime.getURL('settings.html')
   });
@@ -21,6 +21,8 @@ if (localStorage.getItem("firstgo") != "false") {
   chrome.storage.local.set({ "tracker_black_badge": "false" }, () => {
     console.log("tracker_black_badge settings saved");
   });
+} else {
+  console.log("Not first go")
 }
 
 document.getElementById('copy-button').addEventListener('click', function() {
