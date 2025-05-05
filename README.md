@@ -1,5 +1,7 @@
 # ETH Price Hunter Extension
 
+https://chromewebstore.google.com/detail/eth-price-hunter/pflfeolgaeaccbkfiddbdiknkfgielci?authuser=0
+
 ## Overview
 ETH Price Hunter is a Chrome extension that tracks the price of Ethereum (ETH) and displays it on a badge. The extension includes an embedded graph, a settings button, and a settings menu. The badge updates every minute to reflect the latest price.
 
